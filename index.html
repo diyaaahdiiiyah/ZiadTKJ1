@@ -1,0 +1,589 @@
+ <!DOCTYPE html>
+<html lang="id" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biodata Interaktif - Muhammad Ziad Ilmi</title>
+    
+    <!-- Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Noto+Sans+Javanese&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS for theme and effects -->
+    <style>
+        /* Define theme colors and fonts */
+        :root {
+            --primary-blue: #3b82f6; /* A slightly brighter blue */
+            --secondary-blue: #1e40af;
+            --light-grey: #f1f5f9;
+            --dark-grey: #334155;
+            --white: #ffffff;
+            --shadow-glow: rgba(59, 130, 246, 0.5);
+            --font-main: 'Poppins', sans-serif;
+            --font-javanese: 'Noto Sans Javanese', sans-serif;
+        }
+
+        /* Mega Mendung background using SVG for quality and single-file approach */
+        body {
+            font-family: var(--font-main);
+            background-color: #0f172a; /* Dark blue background */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%231e3a8a' fill-opacity='0.1'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm81-68c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-22 71c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM33 39c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM83 63c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-52-5c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zm-2-45c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zm70 15c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
+            background-attachment: fixed;
+            color: var(--light-grey);
+        }
+        
+        /* Card styling with glassmorphism and glow */
+        .card {
+            background: rgba(15, 23, 42, 0.6); /* Semi-transparent dark blue */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2), 0 0 25px var(--shadow-glow);
+            transition: transform 0.3s ease, box-shadow 0.4s ease;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.3), 0 0 40px var(--shadow-glow);
+        }
+
+        /* Custom font for Javanese script */
+        .font-javanese {
+            font-family: var(--font-javanese);
+        }
+        
+        /* Custom styles for Chart.js to make labels readable on dark background */
+        .chart-container {
+            background-color: rgba(30, 41, 59, 0.5);
+            padding: 1rem;
+            border-radius: 0.75rem;
+        }
+
+        /* Styling for the language switcher */
+        .lang-switcher button.active {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            box-shadow: 0 0 10px var(--primary-blue);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Language Switcher -->
+    <nav class="lang-switcher fixed top-4 right-4 z-50 bg-slate-800/50 backdrop-blur-sm p-1.5 rounded-full flex items-center space-x-1 shadow-lg border border-blue-500/20">
+        <button data-lang="id" class="active text-white text-sm font-semibold rounded-full px-3 py-1 transition-all duration-300 hover:bg-blue-500">ID</button>
+        <button data-lang="en" class="text-white text-sm font-semibold rounded-full px-3 py-1 transition-all duration-300 hover:bg-blue-500">EN</button>
+        <button data-lang="jv" class="text-white text-sm font-semibold rounded-full px-3 py-1 transition-all duration-300 hover:bg-blue-500">JV</button>
+        <button data-lang="jv_aksara" class="font-javanese text-white text-lg rounded-full px-3 py-1 transition-all duration-300 hover:bg-blue-500">ꦧꦱꦗꦮ</button>
+        <button data-lang="ar" class="text-white text-sm font-semibold rounded-full px-3 py-1 transition-all duration-300 hover:bg-blue-500">AR</button>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container mx-auto max-w-4xl p-4 md:p-8 space-y-8">
+        
+        <!-- 1. Header -->
+        <header class="card text-center p-8 rounded-2xl">
+            <img src="ziad.png" alt="Foto Muhammad Ziad Ilmi" class="mx-auto w-36 h-36 rounded-full border-4 border-blue-500 shadow-lg shadow-blue-500/50 mb-6">
+            <h1 class="text-4xl md:text-5xl font-bold text-white tracking-tight" data-translate-key="header_name">Muhammad Ziad Ilmi</h1>
+            <p class="text-xl text-blue-300 mt-2" data-translate-key="header_title">Pelajar SMK Ma'arif NU Tirto</p>
+        </header>
+
+        <!-- 2. Biodata Diri -->
+        <section class="card p-8 rounded-2xl">
+            <h2 class="text-3xl font-bold text-blue-400 border-b-2 border-blue-500/30 pb-3 mb-6" data-translate-key="section_title_biodata">Biodata Diri</h2>
+            <ul class="space-y-3 text-lg text-slate-300">
+                <li><strong><span data-translate-key="biodata_name" class="text-slate-100">Nama</span>:</strong> Muhammad Ziad Ilmi</li>
+                <li><strong><span data-translate-key="biodata_ttl" class="text-slate-100">Tempat, Tanggal Lahir</span>:</strong> Pekalongan, 24 Januari 2010</li>
+                <li><strong><span data-translate-key="biodata_address" class="text-slate-100">Alamat</span>:</strong>RT 04/RW 01, NO. 03, , Kec. Tirto, Kab. Pekalongan</li>
+                <li><strong><span data-translate-key="biodata_gender" class="text-slate-100">Jenis Kelamin</span>:</strong> Laki-laki</li>
+                <li><strong><span data-translate-key="biodata_religion" class="text-slate-100">Agama</span>:</strong> Islam</li>
+                <li><strong><span data-translate-key="biodata_nationality" class="text-slate-100">Kewarganegaraan</span>:</strong> Indonesia</li>
+                <li><strong><span data-translate-key="biodata_status" class="text-slate-100">Status</span>:</strong> Pelajar</li>
+                <li><strong><span data-translate-key="biodata_goal" class="text-slate-100">Cita-cita</span>:</strong> Wirausaha</li>
+                <li><strong><span data-translate-key="biodata_email" class="text-slate-100">Email</span>:</strong> ziaaaaad@gmail.com</li>
+                <li><strong><span data-translate-key="biodata_phone" class="text-slate-100">No. Telepon</span>:</strong> +62 858-4***-****</li>
+            </ul>
+        </section>
+
+        <!-- Grid for next sections -->
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- 3. Pendidikan -->
+            <section class="card p-8 rounded-2xl">
+                <h2 class="text-3xl font-bold text-blue-400 border-b-2 border-blue-500/30 pb-3 mb-6" data-translate-key="section_title_education">Pendidikan</h2>
+                <ul class="space-y-3 list-disc list-inside text-lg text-slate-300">
+                    <li>MIS Curug (2015-2021)</li>
+                    <li>MTS IN Banyurip Ageng (2021-2024)</li>
+                    <li>SMK Ma'arif NU Tirto (2024-Sekarang)</li>
+                </ul>
+            </section>
+
+            <!-- 4. Keterampilan -->
+            <section class="card p-8 rounded-2xl">
+                <h2 class="text-3xl font-bold text-blue-400 border-b-2 border-blue-500/30 pb-3 mb-6" data-translate-key="section_title_skills">Keterampilan</h2>
+                <ul class="space-y-3 list-disc list-inside text-lg text-slate-300">
+                    <li data-translate-key="skill_1">Mendesain desain grafis dengan Canva</li>
+                    <li data-translate-key="skill_2">Instalasi Debian 11</li>
+                    <li data-translate-key="skill_3">Video Editing</li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- 5. Riwayat Hidup & 6. Prestasi -->
+        <div class="grid md:grid-cols-2 gap-8">
+            <section class="card p-8 rounded-2xl">
+                <h2 class="text-3xl font-bold text-blue-400 border-b-2 border-blue-500/30 pb-3 mb-6" data-translate-key="section_title_experience">Pengalaman</h2>
+                <ul class="space-y-3 list-disc list-inside text-lg text-slate-300">
+                    <li data-translate-key="experience_1">Mengikuti Porseni IPNU di desa</li>
+                    <li data-translate-key="experience_2">Mengikuti study tour ke Jawa Timur saat kelas 8</li>
+                </ul>
+            </section>
+            <section class="card p-8 rounded-2xl">
+                <h2 class="text-3xl font-bold text-blue-400 border-b-2 border-blue-500/30 pb-3 mb-6" data-translate-key="section_title_achievements">Prestasi</h2>
+                <p class="text-lg text-slate-300" data-translate-key="achievement_1">Berturut-turut Masuk 5 besar saat MI</p>
+            </section>
+        </div>
+
+        <!-- 7. Statistika Kegiatan -->
+        <section class="card p-8 rounded-2xl">
+            <h2 class="text-3xl font-bold text-blue-400 border-b-2 border-blue-500/30 pb-3 mb-6" data-translate-key="section_title_daily_stats">Statistika Kegiatan Harian</h2>
+            <div class="chart-container">
+                <canvas id="dailyActivityChart"></canvas>
+            </div>
+        </section>
+
+        <!-- 8. Hobi -->
+        <section class="card p-8 rounded-2xl">
+            <h2 class="text-3xl font-bold text-blue-400 border-b-2 border-blue-500/30 pb-3 mb-6" data-translate-key="section_title_hobbies">Hobi</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="chart-container">
+                    <h3 class="text-xl font-semibold text-center text-slate-200 mb-4" data-translate-key="hobby_chart_pie">Distribusi Hobi (%)</h3>
+                    <canvas id="hobbyPieChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="text-xl font-semibold text-center text-slate-200 mb-4" data-translate-key="hobby_chart_radar">Tingkat Minat (1-10)</h3>
+                    <canvas id="hobbyRadarChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9, 10, 11 -->
+        <div class="grid md:grid-cols-2 gap-8">
+            <section class="card p-8 rounded-2xl md:col-span-2">
+                 <h2 class="text-3xl font-bold text-blue-400 border-b-2 border-blue-500/30 pb-3 mb-6" data-translate-key="section_title_motto">Moto Hidup</h2>
+                <blockquote class="text-2xl italic text-center text-slate-200" data-translate-key="motto_text">
+                    "Gagal itu pelajaran, Bangkit itu pilihan"
+                </blockquote>
+            </section>
+            <section class="card p-8 rounded-2xl">
+                <h2 class="text-3xl font-bold text-blue-400 border-b-2 border-blue-500/30 pb-3 mb-6" data-translate-key="section_title_interests">Minat</h2>
+                <ul class="space-y-3 list-disc list-inside text-lg text-slate-300">
+                    <li data-translate-key="interest_1"><strong>Game Online:</strong> Dapat menghilangkan stres berlebihan.</li>
+                    <li data-translate-key="interest_2">Tertarik mempelajari Komputer, Internet, dan Jaringan.</li>
+                </ul>
+            </section>
+            <section class="card p-8 rounded-2xl">
+                <h2 class="text-3xl font-bold text-blue-400 border-b-2 border-blue-500/30 pb-3 mb-6" data-translate-key="section_title_future_hope">Harapan</h2>
+                <p class="text-lg text-slate-300" data-translate-key="future_hope_text">
+                    Menjadi Wirausahawan yang inovatif dengan menghadirkan ide-ide baru, sehingga usaha yang saya bangun dapat berkembang dan mampu meningkatkan kualitas hidup keluarga saya.
+                </p>
+            </section>
+        </div>
+        
+        <!-- 13. Tabel Data -->
+        <section class="card p-8 rounded-2xl">
+            <h2 class="text-3xl font-bold text-blue-400 border-b-2 border-blue-500/30 pb-3 mb-6" data-translate-key="section_title_data_summary">Ringkasan Data</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-lg">
+                    <thead class="bg-slate-700/50 text-slate-200">
+                        <tr>
+                            <th class="p-4 rounded-tl-lg" data-translate-key="table_header_category">Kategori</th>
+                            <th class="p-4" data-translate-key="table_header_details">Detail</th>
+                            <th class="p-4 rounded-tr-lg" data-translate-key="table_header_calculation">Kalkulasi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-300">
+                        <tr class="border-b border-slate-700">
+                            <td class="p-4 font-semibold" data-translate-key="table_cat_hobbies">Hobi</td>
+                            <td class="p-4" data-translate-key="table_detail_hobbies">Modus Hobi: Membaca & Game (15%), Tertinggi: Jalan-jalan (30%)</td>
+                            <td class="p-4 font-mono">Modus = 15%</td>
+                        </tr>
+                        <tr class="border-b border-slate-700">
+                            <td class="p-4 font-semibold" data-translate-key="table_cat_achievements">Prestasi</td>
+                            <td class="p-4" data-translate-key="table_detail_achievements">1 Prestasi Akademik (Masuk 5 besar MI)</td>
+                            <td class="p-4 font-mono">1/1 x 100% = 100% Akademik</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-semibold" data-translate-key="table_cat_weekly_activity">Kegiatan Mingguan</td>
+                            <td class="p-4" data-translate-key="table_detail_weekly_activity">Total 129 jam/minggu. Rata-rata 18.43 jam/hari.</td>
+                            <td class="p-4 font-mono">129 jam / 7 ≈ 18.43 jam/hari</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Library Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Main JavaScript Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- 1. LANGUAGE TRANSLATION LOGIC ---
+            const translations = {
+                // ... (Translation data from previous thought process)
+                id: {
+                    header_title: "Pelajar SMK Ma'arif NU Tirto",
+                    section_title_biodata: "Biodata Diri",
+                    biodata_name: "Nama",
+                    biodata_ttl: "Tempat, Tanggal Lahir",
+                    biodata_address: "Alamat",
+                    biodata_gender: "Jenis Kelamin",
+                    biodata_religion: "Agama",
+                    biodata_nationality: "Kewarganegaraan",
+                    biodata_status: "Status",
+                    biodata_goal: "Cita-cita",
+                    biodata_email: "Email",
+                    biodata_phone: "No. Telepon",
+                    section_title_education: "Pendidikan",
+                    section_title_skills: "Keterampilan",
+                    skill_1: "Mendesain desain grafis dengan Canva",
+                    skill_2: "Instalasi Debian 11",
+                    skill_3: "Video Editing",
+                    section_title_experience: "Pengalaman",
+                    experience_1: "Mengikuti Porseni IPNU di desa",
+                    experience_2: "Mengikuti study tour ke Jawa Timur saat kelas 8",
+                    section_title_achievements: "Prestasi",
+                    achievement_1: "Berturut-turut Masuk 5 besar saat MI",
+                    section_title_daily_stats: "Statistika Kegiatan Harian",
+                    section_title_hobbies: "Hobi",
+                    hobby_chart_pie: "Distribusi Hobi (%)",
+                    hobby_chart_radar: "Tingkat Minat (1-10)",
+                    section_title_motto: "Moto Hidup",
+                    motto_text: '"Gagal itu pelajaran, Bangkit itu pilihan"',
+                    section_title_interests: "Minat",
+                    interest_1: "<strong>Game Online:</strong> Dapat menghilangkan stres berlebihan.",
+                    interest_2: "Tertarik mempelajari Komputer, Internet, dan Jaringan.",
+                    section_title_future_hope: "Harapan",
+                    future_hope_text: "Menjadi Wirausahawan yang inovatif dengan menghadirkan ide-ide baru, sehingga usaha yang saya bangun dapat berkembang dan mampu meningkatkan kualitas hidup keluarga saya.",
+                    section_title_data_summary: "Ringkasan Data",
+                    table_header_category: "Kategori",
+                    table_header_details: "Detail",
+                    table_header_calculation: "Kalkulasi",
+                    table_cat_hobbies: "Hobi",
+                    table_detail_hobbies: "Modus Hobi: Membaca & Game (15%), Tertinggi: Jalan-jalan (30%)",
+                    table_cat_achievements: "Prestasi",
+                    table_detail_achievements: "1 Prestasi Akademik (Masuk 5 besar MI)",
+                    table_cat_weekly_activity: "Kegiatan Mingguan",
+                    table_detail_weekly_activity: "Total 129 jam/minggu. Rata-rata 18.43 jam/hari.",
+                },
+                en: {
+                    header_title: "Student at SMK Ma'arif NU Tirto",
+                    section_title_biodata: "Personal Biodata",
+                    biodata_name: "Name",
+                    biodata_ttl: "Place, Date of Birth",
+                    biodata_address: "Address",
+                    biodata_gender: "Gender",
+                    biodata_religion: "Religion",
+                    biodata_nationality: "Nationality",
+                    biodata_status: "Status",
+                    biodata_goal: "Ambition",
+                    biodata_email: "Email",
+                    biodata_phone: "Phone Number",
+                    section_title_education: "Education",
+                    section_title_skills: "Skills",
+                    skill_1: "Graphic design using Canva",
+                    skill_2: "Debian 11 Installation",
+                    skill_3: "Video Editing",
+                    section_title_experience: "Experience",
+                    experience_1: "Participated in Porseni IPNU in the village",
+                    experience_2: "Joined a study tour to East Java in 8th grade",
+                    section_title_achievements: "Achievements",
+                    achievement_1: "Consistently in the Top 5 during Elementary School (MI)",
+                    section_title_daily_stats: "Daily Activity Statistics",
+                    section_title_hobbies: "Hobbies",
+                    hobby_chart_pie: "Hobby Distribution (%)",
+                    hobby_chart_radar: "Interest Level (1-10)",
+                    section_title_motto: "Life Motto",
+                    motto_text: '"Failure is a lesson, Rising up is a choice"',
+                    section_title_interests: "Interests",
+                    interest_1: "<strong>Online Games:</strong> Can relieve excessive stress.",
+                    interest_2: "Interested in learning about Computers, Internet, and Networking.",
+                    section_title_future_hope: "Future Hopes",
+                    future_hope_text: "To become an innovative entrepreneur by presenting new ideas, so that the business I build can grow and improve my family's quality of life.",
+                    section_title_data_summary: "Data Summary",
+                    table_header_category: "Category",
+                    table_header_details: "Details",
+                    table_header_calculation: "Calculation",
+                    table_cat_hobbies: "Hobbies",
+                    table_detail_hobbies: "Hobby Mode: Reading & Gaming (15%), Highest: Traveling (30%)",
+                    table_cat_achievements: "Achievements",
+                    table_detail_achievements: "1 Academic Achievement (Top 5 in MI)",
+                    table_cat_weekly_activity: "Weekly Activities",
+                    table_detail_weekly_activity: "Total 129 hours/week. Average 18.43 hours/day.",
+                },
+                jv: {
+                    header_title: "Siswa SMK Ma'arif NU Tirto",
+                    section_title_biodata: "Biodata Pribadi",
+                    biodata_name: "Asma",
+                    biodata_ttl: "Papan, Tanggal Lair",
+                    biodata_address: "Alamat",
+                    biodata_gender: "Jenis Kelamin",
+                    biodata_religion: "Agami",
+                    biodata_nationality: "Kewarganegaraan",
+                    biodata_status: "Status",
+                    biodata_goal: "Gegayuhan",
+                    biodata_email: "Email",
+                    biodata_phone: "Nomer Telpon",
+                    section_title_education: "Pendhidhikan",
+                    section_title_skills: "Katerampilan",
+                    skill_1: "Ngrancang desain grafis mawi Canva",
+                    skill_2: "Instalasi Debian 11",
+                    skill_3: "Ngédit Video",
+                    section_title_experience: "Pengalaman",
+                    experience_1: "Mèlu Porseni IPNU ing désa",
+                    experience_2: "Mèlu study tour menyang Jawa Wétan nalika kelas 8",
+                    section_title_achievements: "Préstasi",
+                    achievement_1: "Tansah Mlebet 5 ageng nalika MI",
+                    section_title_daily_stats: "Statistik Kagiyatan Saben Dinten",
+                    section_title_hobbies: "Hobi",
+                    hobby_chart_pie: "Distribusi Hobi (%)",
+                    hobby_chart_radar: "Tingkat Minat (1-10)",
+                    section_title_motto: "Motto Urip",
+                    motto_text: '"Gagal iku piwulang, Bangkit iku pilihan"',
+                    section_title_interests: "Minat",
+                    interest_1: "<strong>Game Online:</strong> Saged ngilangi stres ingkang keluwihan.",
+                    interest_2: "Remen sinau babagan Komputer, Internet, lan Jaringan.",
+                    section_title_future_hope: "Pangajab",
+                    future_hope_text: "Dados Wirausahawan ingkang inovatif kanthi gagasan-gagasan énggal, supados usaha ingkang kula bangun saged ngrembaka lan ningkataken kualitas gesang kulawarga.",
+                    section_title_data_summary: "Ringkesan Data",
+                    table_header_category: "Kategori",
+                    table_header_details: "Rincian",
+                    table_header_calculation: "Pétungan",
+                    table_cat_hobbies: "Hobi",
+                    table_detail_hobbies: "Modus Hobi: Maos & Game (15%), Paling Inggil: Lelungan (30%)",
+                    table_cat_achievements: "Préstasi",
+                    table_detail_achievements: "1 Préstasi Akademik (Mlebet 5 ageng MI)",
+                    table_cat_weekly_activity: "Kagiyatan Minggon",
+                    table_detail_weekly_activity: "Total 129 jam/minggu. Rata-rata 18.43 jam/dinten.",
+                },
+                jv_aksara: {
+                    header_title: "ꦱꦶꦱ꧀ꦮ ꦱ꧀ꦩ꧀ꦏ꧀ ꦩꦄꦫꦶꦥ꦳꧀ ꦤꦸ ꦠꦶꦂꦠ",
+                    section_title_biodata: "ꦧꦶꦪꦺꦴꦢꦠ ꦥꦿꦶꦧꦢꦶ",
+                    biodata_name: "ꦄꦱ꧀ꦩ",
+                    biodata_ttl: "ꦥꦥꦤ꧀, ꦠꦁꦒꦭ꧀ ꦭꦲꦶꦂ",
+                    biodata_address: "ꦄꦭꦩꦠ꧀",
+                    biodata_gender: "ꦗꦶꦤꦶꦱ꧀ ꦏꦺꦭꦩꦶꦤ꧀",
+                    biodata_religion: "ꦄꦒꦩꦶ",
+                    biodata_nationality: "ꦏꦼꦮꦂꦒꦤꦒꦫꦄꦤ꧀",
+                    biodata_status: "ꦱ꧀ꦠꦠꦸꦱ꧀",
+                    biodata_goal: "ꦒꦼꦒꦪꦸꦲꦤ꧀",
+                    biodata_email: "ꦌꦩꦶꦭ꧀",
+                    biodata_phone: "ꦤꦺꦴꦩꦼꦂ ꦠꦺꦭ꧀ꦥꦺꦴꦤ꧀",
+                    section_title_education: "ꦥꦼꦤ꧀ꦝꦶꦝꦶꦏꦤ꧀",
+                    section_title_skills: "ꦏꦠꦿꦩ꧀ꦥꦶꦭꦤ꧀",
+                    skill_1: "ꦔꦿꦚ꧀ꦕꦁ ꦢꦼꦱꦲꦶꦤ꧀ ꦒꦿꦥ꦳ꦶꦱ꧀ ꦩꦮꦶ ꦕꦤ꧀ꦥ꦳",
+                    skill_2: "ꦆꦤ꧀ꦱ꧀ꦠꦭꦱꦶ ꦢꦺꦧꦶꦪꦤ꧀ ꧇꧑꧑꧇",
+                    skill_3: "ꦔꦺꦢꦶꦠ꧀ ꦮ꦳ꦶꦢꦺꦪꦺꦴ",
+                    section_title_experience: "ꦥꦼꦔꦭꦩꦤ꧀",
+                    experience_1: "ꦩꦺꦭꦸ ꦥꦺꦴꦂꦱꦺꦤꦶ ꦆꦥ꧀ꦤꦸ ꦲꦶꦁ ꦢꦺꦱ",
+                    experience_2: "ꦩꦺꦭꦸ ꦱ꧀ꦠꦸꦢꦶ ꦠꦸꦂ ꦩꦼꦚꦁ ꦗꦮ ꦮꦺꦠꦤ꧀ ꦤꦭꦶꦏ ꦏꦼꦭꦱ꧀ ꧇꧘꧇",
+                    section_title_achievements: "ꦥꦿꦺꦱ꧀ꦠꦱꦶ",
+                    achievement_1: "ꦠꦤ꧀ꦱꦃ ꦩ꧀ꦭꦼꦧꦼꦠ꧀ ꧇꧕꧇ ꦄꦒꦼꦁ ꦤꦭꦶꦏ ꦩ꧀ꦆ",
+                    section_title_daily_stats: "ꦱ꧀ꦠꦠꦶꦱ꧀ꦠꦶꦏ꧀ ꦏꦒꦶꦪꦠꦤ꧀ ꦱꦧꦼꦤ꧀ ꦢꦶꦤ꧀ꦠꦼꦤ꧀",
+                    section_title_hobbies: "ꦲꦺꦴꦧꦶ",
+                    hobby_chart_pie: "ꦢꦶꦱ꧀ꦠꦿꦶꦧꦸꦱꦶ ꦲꦺꦴꦧꦶ (%)",
+                    hobby_chart_radar: "ꦠꦶꦁꦏꦠ꧀ ꦩꦶꦤꦠ꧀ (꧇꧑꧇-꧇꧑꧐꧇)",
+                    section_title_motto: "ꦩꦺꦴꦠ꧀ꦠꦺꦴ ꦈꦫ궶ꦥ꧀",
+                    motto_text: '"ꦒꦒꦭ꧀ ꦲꦶꦏꦸ ꦥꦶꦮꦸꦭꦁ, ꦧꦁꦏꦶꦠ꧀ ꦲꦶꦏꦸ ꦥꦶꦭꦶꦲꦤ꧀"',
+                    section_title_interests: "ꦩꦶꦤꦠ꧀",
+                    interest_1: "<strong>ꦒꦩꦼ ꦎꦤ꧀ꦭꦶꦤꦼ:</strong> ꦱꦒꦼꦢ꧀ ꦔꦶꦭꦔꦶ ꦱ꧀ꦠꦿꦺꦱ꧀ ꦲꦶꦁꦏꦁ ꦏꦼꦭꦸꦮꦶꦲꦤ꧀.",
+                    interest_2: "ꦉꦩꦼꦤ꧀ ꦱꦶꦤꦲꦸ ꦧꦧꦒꦤ꧀ ꦏꦺꦴꦩ꧀ꦥꦸꦠꦼꦂ, ꦆꦤ꧀ꦠꦼꦂꦤꦺꦠ꧀, ꦭꦤ꧀ ꦗꦫꦶꦔꦤ꧀.",
+                    section_title_future_hope: "ꦥꦔꦗꦧ꧀",
+                    future_hope_text: "ꦢꦢꦺꦴꦱ꧀ ꦮꦶꦫꦲꦸꦱꦲꦮꦤ꧀ ꦲꦶꦁꦏꦁ ꦆꦤꦺꦴꦮ꦳ꦠꦶꦥ꦳꧀ ꦏꦤ꧀ꦛꦶ ꦒꦒꦱꦤ꧀-ꦒꦒꦱꦤ꧀ ꦌꦁꦒꦭ꧀, ꦱꦸꦥꦢꦺꦴꦱ꧀ ꦲꦸꦱꦲ ꦲꦶꦁꦏꦁ ꦏꦸꦭ ꦧꦔꦸꦤ꧀ ꦱꦒꦼꦢ꧀ ꦔꦽꦩ꧀ꦧꦏ ꦭꦤ꧀ ꦤꦶꦁꦏꦠꦏꦼꦤ꧀ ꦏꦸꦮꦭꦶꦠꦱ꧀ ꦒꦼꦱꦁ ꦏꦸꦭꦮꦂꦒ.",
+                    section_title_data_summary: "ꦫꦶꦁꦏꦼꦱꦤ꧀ ꦢꦠ",
+                    table_header_category: "ꦏꦠꦺꦒꦺꦴꦫꦶ",
+                    table_header_details: "ꦫꦶꦚ꧀ꦕꦶꦪꦤ꧀",
+                    table_header_calculation: "ꦥꦺꦠꦸꦔꦤ꧀",
+                    table_cat_hobbies: "ꦲꦺꦴꦧꦶ",
+                    table_detail_hobbies: "ꦩꦺꦴꦢꦸꦱ꧀ ꦲꦺꦴꦧꦶ: ꦩꦲꦺꦴꦱ꧀ & ꦒꦩꦼ (15%), ꦥꦭꦶꦁ ꦲꦶꦁꦒꦶꦭ꧀: ꦭꦼꦭꦸꦔꦤ꧀ (30%)",
+                    table_cat_achievements: "ꦥꦿꦺꦱ꧀ꦠꦱꦶ",
+                    table_detail_achievements: "꧇꧑꧇ ꦥꦿꦺꦱ꧀ꦠꦱꦶ ꦄꦏꦢꦺꦩꦶꦏ꧀ (ꦩ꧀ꦭꦼꦧꦼꦠ꧀ ꧇꧕꧇ ꦄꦒꦼꦁ ꦩ꧀ꦆ)",
+                    table_cat_weekly_activity: "ꦏꦒꦶꦪꦠꦤ꧀ ꦩꦶꦁꦒꦺꦴꦤ꧀",
+                    table_detail_weekly_activity: "ꦠꦺꦴꦠꦭ꧀ ꧇꧑꧒꧙꧇ ꦗꦩ꧀/ꦩꦶꦁꦒꦸ. ꦫꦠ-ꦫꦠ ꧇꧑꧘꧇.꧇꧔꧓꧇ ꦗꦩ꧀/ꦢꦶꦤ꧀ꦠꦼꦤ꧀.",
+                },
+                ar: {
+                    header_title: "طالب في مدرسة معروف نهضة العلماء تيرتو المهنية",
+                    section_title_biodata: "البيانات الشخصية",
+                    biodata_name: "الاسم",
+                    biodata_ttl: "مكان وتاريخ الميلاد",
+                    biodata_address: "العنوان",
+                    biodata_gender: "الجنس",
+                    biodata_religion: "الدين",
+                    biodata_nationality: "الجنسية",
+                    biodata_status: "الحالة",
+                    biodata_goal: "الطموح",
+                    biodata_email: "البريد الإلكتروني",
+                    biodata_phone: "رقم الهاتف",
+                    section_title_education: "التعليم",
+                    section_title_skills: "المهارات",
+                    skill_1: "تصميم الجرافيك باستخدام Canva",
+                    skill_2: "تثبيت ديبيان 11",
+                    skill_3: "تحرير الفيديو",
+                    section_title_experience: "الخبرة",
+                    experience_1: "المشاركة في Porseni IPNU في القرية",
+                    experience_2: "المشاركة في جولة دراسية إلى جاوة الشرقية في الصف الثامن",
+                    section_title_achievements: "الإنجازات",
+                    achievement_1: "بشكل مستمر ضمن أفضل 5 طلاب خلال المدرسة الابتدائية الإسلامية",
+                    section_title_daily_stats: "إحصائيات الأنشطة اليومية",
+                    section_title_hobbies: "الهوايات",
+                    hobby_chart_pie: "توزيع الهوايات (%)",
+                    hobby_chart_radar: "مستوى الاهتمام (1-10)",
+                    section_title_motto: "شعار الحياة",
+                    motto_text: '"الفشل درس، والنهوض خيار"',
+                    section_title_interests: "الاهتمامات",
+                    interest_1: "<strong>الألعاب عبر الإنترنت:</strong> يمكن أن تخفف من التوتر المفرط.",
+                    interest_2: "مهتم بتعلم الكمبيوتر والإنترنت والشبكات.",
+                    section_title_future_hope: "آمال المستقبل",
+                    future_hope_text: "أن أصبح رائد أعمال مبتكرًا من خلال تقديم أفكار جديدة، حتى يتمكن العمل الذي أقوم ببنائه من النمو وتحسين نوعية حياة عائلتي.",
+                    section_title_data_summary: "ملخص البيانات",
+                    table_header_category: "الفئة",
+                    table_header_details: "التفاصيل",
+                    table_header_calculation: "الحساب",
+                    table_cat_hobbies: "الهوايات",
+                    table_detail_hobbies: "وضع الهواية: القراءة والألعاب (15%)، الأعلى: السفر (30%)",
+                    table_cat_achievements: "الإنجازات",
+                    table_detail_achievements: "1 إنجاز أكاديمي (ضمن أفضل 5 في MI)",
+                    table_cat_weekly_activity: "الأنشطة الأسبوعية",
+                    table_detail_weekly_activity: "المجموع 129 ساعة/أسبوع. المتوسط 18.43 ساعة/يوم.",
+                }
+            };
+
+            const languageButtons = document.querySelectorAll('.lang-switcher button');
+            const translatableElements = document.querySelectorAll('[data-translate-key]');
+
+            const changeLanguage = (lang) => {
+                document.documentElement.lang = lang.split('_')[0];
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+                translatableElements.forEach(el => {
+                    const key = el.dataset.translateKey;
+                    if (translations[lang] && translations[lang][key]) {
+                        el.innerHTML = translations[lang][key];
+                    }
+                });
+
+                languageButtons.forEach(button => {
+                    button.classList.remove('active');
+                    if (button.dataset.lang === lang) {
+                        button.classList.add('active');
+                    }
+                });
+            };
+
+            languageButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    changeLanguage(button.dataset.lang);
+                });
+            });
+
+            // --- 2. CHART.JS CONFIGURATION ---
+            const chartTextColor = '#cbd5e1'; // Light slate color for text
+            const gridColor = 'rgba(59, 130, 246, 0.2)';
+
+            Chart.defaults.color = chartTextColor;
+            Chart.defaults.font.family = "'Poppins', sans-serif";
+            Chart.defaults.plugins.legend.position = 'bottom';
+            Chart.defaults.plugins.legend.labels.color = chartTextColor;
+
+            // Chart 1: Daily Activity (Bar Chart)
+            new Chart(document.getElementById('dailyActivityChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Tidur', 'Sekolah', 'Belajar', 'Hobi', 'Sosialisasi', 'Lain-lain'],
+                    datasets: [{
+                        label: 'Jam per Hari/Minggu',
+                        data: [6, 7, 1, 3, 1, 4],
+                        backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 2,
+                        borderRadius: 5,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: gridColor } },
+                        x: { grid: { color: 'transparent' } }
+                    },
+                    plugins: {
+                        tooltip: { backgroundColor: '#0f172a', titleColor: '#ffffff', bodyColor: '#ffffff' }
+                    }
+                }
+            });
+
+            // Chart 2: Hobby Distribution (Doughnut Chart)
+            new Chart(document.getElementById('hobbyPieChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Memasak', 'Game Online', 'Membaca Novel', 'Membaca Cerpen', 'Jalan-jalan'],
+                    datasets: [{
+                        data: [25, 15, 15, 15, 30],
+                        backgroundColor: ['#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#1e40af'],
+                        borderColor: '#1e293b',
+                        hoverOffset: 8
+                    }]
+                },
+                 options: { responsive: true, plugins: { legend: { labels: { boxWidth: 15 }}}}
+            });
+
+            // Chart 3: Hobby Interest (Radar Chart)
+            new Chart(document.getElementById('hobbyRadarChart'), {
+                type: 'radar',
+                data: {
+                    labels: ['Memasak', 'Game Online', 'Membaca Novel', 'Membaca Cerpen', 'Jalan-jalan'],
+                    datasets: [{
+                        label: 'Tingkat Minat',
+                        data: [8, 9, 7, 7, 10],
+                        fill: true,
+                        backgroundColor: 'rgba(59, 130, 246, 0.3)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        r: {
+                            beginAtZero: true, max: 10, stepSize: 2,
+                            grid: { color: gridColor },
+                            angleLines: { color: gridColor },
+                            pointLabels: { color: chartTextColor, font: { size: 12 } }
+                        }
+                    }
+                }
+            });
+
+            // --- 3. GSAP SCROLL ANIMATIONS ---
+            gsap.registerPlugin(ScrollTrigger);
+            gsap.utils.toArray('.card').forEach(card => {
+                gsap.from(card, {
+                    opacity: 0, y: 50, duration: 0.8,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 90%',
+                        toggleActions: 'play none none none'
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
